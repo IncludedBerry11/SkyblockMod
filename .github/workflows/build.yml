@@ -1,23 +1,23 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-name: Compile Beta
-
+name: Build
 on:
   push:
-    branches: [ development ]
+    branches: 
+      - "*"
   pull_request:
     branches: [ development ]
-
+  workflow_dispatch:
 jobs:
   build:
    runs-on: windows-latest
    steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: actions/setup-java@v1
       with: 
         java-version: 17
     - name: Cache Gradle packages
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: |
           ~/.gradle/caches
@@ -26,9 +26,9 @@ jobs:
         restore-keys: ${{ runner.os }}-gradle
     - run: ./gradlew build --no-daemon
     - name: Upload
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
-       name: Beta Version (Unstable)
+       name: Danker's Skyblock Mod
        path: |
          versions/1.8.9-forge/build/libs/*.jar
          !versions/1.8.9-forge/build/libs/*-dev.jar
